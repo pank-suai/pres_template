@@ -33,10 +33,10 @@
 #let presentation(
   title: [],
   subtitle: [],
-  author: [],
+  author: ("Автор", ),
   body
 ) = {
-  set document(title: "ГУАП Презентация", author: "ГУАП")
+  set document(title: title, author: author)
   set page(
     paper: "presentation-16-9", 
     margin: 0pt,
@@ -72,17 +72,12 @@
         #set text(fill: black, size: 18pt, weight: "regular")
         #set par(leading: 0.4em)
         #subtitle
-        
-        #if author != [] [
-           #v(1em)
-           #text(size: 18pt, author)
-        ]
       ]
     ]
 
     // Год
     #place(bottom + right, dx: -margin-x, dy: -margin-x)[
-      #text(fill: guap-red, size: 23pt, weight: "semibold", [#datetime.today().year()])
+      #text(fill: guap-red, size: 24pt, weight: "medium", [#datetime.today().year()])
     ]
   ]
 
