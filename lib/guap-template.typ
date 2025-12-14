@@ -1,3 +1,7 @@
+#import "@preview/polylux:0.4.0": *
+
+#import "@preview/polylux:0.4.0" as polylux
+#import polylux: uncover, only
 
 // Цвета ГУАП
 #let guap-blue = rgb("#005aaa") 
@@ -39,7 +43,7 @@
   )
   set text(font: "Arial", size: 20pt, lang: "ru")
 
-  set list(marker: [#text(fill: red)[•]])
+  set list(marker: [#text(fill: guap-red)[•]])
   set figure.caption(separator: [. ], position: top)
   show figure.caption: set text(size: 14pt, weight: "bold", fill: guap-dark-blue)
   show figure.caption: set align(left)
@@ -110,9 +114,9 @@
 
 // --- Функции слайдов ---
 
-// Базовый слайд (уже есть, немного доработаем для гибкости)
+// Базовый слайд
 #let slide(title: auto, content) = {
-  page[
+  polylux.slide[
     // Заголовок
     #if title != auto [
        #place(top + left, dx: 0pt, dy: -65pt)[
@@ -143,8 +147,7 @@
   ]
 }
 
-// Слайд "Текст и рисунок" (как на скриншоте 18)
-// Особенность: скругление левого верхнего угла у картинки
+// Слайд "Текст и рисунок"
 #let slide-text-image(title: auto, text-content, image-content, caption: none, kind: image) = {
   slide(title: title)[
     #grid(
@@ -157,9 +160,6 @@
         #figure(
         block(width: 100%, height: 100%)[ // Фиксированная высота для примера
            #layout(size => {
-              // Создаем маску или просто блок с radius
-              // Typst позволяет задавать радиус для каждого угла отдельно!
-              // radius: (top-left: 50pt, rest: 0pt)
               block(
                  width: 100%, 
                  height: auto, // высота по контенту или фиксированная
@@ -179,4 +179,3 @@
 
 // Вспомогательные стили текста из макета
 #let txt-subtitle(content) = text(fill: guap-dark-blue, style: "italic", size: 20pt, content)
-
