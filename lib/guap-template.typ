@@ -1,5 +1,4 @@
-#import "@preview/polylux:0.4.0": *
-
+#import "@preview/tiaoma:0.2.0": qrcode
 #import "@preview/polylux:0.4.0" as polylux
 #import polylux: uncover, only
 
@@ -172,5 +171,43 @@
   ]
 }
 
-// Вспомогательные стили текста из макета
-#let txt-subtitle(content) = text(fill: guap-dark-blue, style: "italic", size: 20pt, content)
+
+#let final-slide(
+  contacts: [Контактные данные], 
+  qr-code: none // Можно указать любые данные для QR-кода
+) = {
+  polylux.slide[
+    #set page(
+      header: none, 
+      footer: none, 
+      margin: 0pt,
+      background: {
+           image("images/last-bg.png", width: 100%, height: 100%, fit: "cover")
+      }
+    )
+
+    // Контейнер для Логотипа, URL и QR-кода (Верхний правый угол)
+    #place(top + right, dx: -margin-x, dy: 65pt)[
+      #if qr-code != none {
+          qrcode(qr-code, options: (
+             scale: 2.0, 
+             output-options: (
+              barcode-dotty-mode: true
+             ),             
+             dot-size: 1.0, 
+             fg-color: guap-blue, 
+             bg-color: none
+           ))
+        }
+    ]
+
+    // Текст "Контактные данные" (Справа, ближе к середине/низу)
+    #place(right + horizon, dx: -margin-x, dy: 10%)[
+       #text(size: 24pt, fill: black)[
+         #contacts
+       ]
+    ]
+  ]
+}
+
+

@@ -69,3 +69,15 @@
   #uncover(3)[- Пункт 2 (появится на 3-м шаге)]
   #uncover("4-")[- Пункт 3 (с 4-го шага и далее)]
 ]
+
+#final-slide(
+  contacts: [
+    Контактные данные
+    #v(0.5em)
+    #text(size: 16pt, fill: gray)[
+      Телефон: +7 (812) 000-00-00 \
+      Email: info\@guap.ru
+    ]
+  ],
+  qr-code: "images/guap-logo.png" // Замените на путь к вашему QR-коду
+)
