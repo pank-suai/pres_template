@@ -1,13 +1,13 @@
 
 // Цвета ГУАП
-#let guap-blue = rgb("#005eb8") 
+#let guap-blue = rgb("#005aaa") 
 #let guap-dark-blue = rgb("#1b3f95") 
 #let guap-cyan = rgb("#00a9e0") 
 #let guap-magenta = rgb("#c6168d") 
 #let guap-red = rgb("#e30613") 
 
 // Размеры и отступы
-#let margin-x = 36pt // 1.27cm
+#let margin-x = 1.25cm
 #let margin-top = 100pt // Отступ сверху для контента
 #let margin-bottom = 40pt
 
@@ -20,17 +20,10 @@
   ]
 }
 
-// Логотип для титульного (большой)
-#let guap-logo-large() = {
-  stack(dir: ltr, spacing: 14pt,
-    guap-icon-placeholder(size: 56pt),
-    align(horizon, text(font: "Roboto",weight: "bold", fill: guap-dark-blue, size: 42pt)[ГУАП])
-  )
-}
 
 // Логотип для слайдов (маленький)
 #let guap-logo-small() = {
-  image("images/guap-logo.png", width: 100pt)
+  image("images/guap-logo.png", width: 80pt)
 }
 
 #let presentation(
@@ -44,9 +37,15 @@
     paper: "presentation-16-9", 
     margin: 0pt,
   )
-  set text(font: "Roboto", size: 20pt, lang: "ru")
+  set text(font: "Arial", size: 20pt, lang: "ru")
 
   set list(marker: [#text(fill: red)[•]])
+  set figure.caption(separator: [. ], position: top)
+  show figure.caption: set text(size: 14pt, weight: "bold", fill: guap-dark-blue)
+  show figure.caption: set align(left)
+
+
+  show figure.where(kind: image): set figure(supplement: "Рисунок")
 
   // --- Титульный слайд ---
   page(background: {
@@ -64,7 +63,7 @@
     ]
 
     // Подзаголовок
-    #place(top + left, dx: margin-x, dy: 62%)[
+    #place(top + left, dx: margin-x, dy: 66%)[
       #block(width: 80%)[
         #set text(fill: black, size: 18pt, weight: "regular")
         #set par(leading: 0.4em)
@@ -91,23 +90,20 @@
     },
     // Хедер с логотипом
     header: context {
-      place(top + right, dx: 0pt, dy: 25pt)[ // 20pt от верха страницы
+      place(top + right, dx: 0pt, dy: 30pt)[ // 20pt от верха страницы
          #guap-logo-small()
       ]
     },
     // Футер с номером страницы
     footer: context {
       align(right)[
-        #text(size: 12pt, fill: black)[
+        #text(size: 12pt, fill: rgb("002755"))[
            #counter(page).display()
         ]
       ]
     }
   )
-  
-  // Сбрасываем счетчик страниц, чтобы титульный был 1 (или 0, если не нумеруем)
-  // Обычно титульный не нумеруется, начнем с 1 на контенте?
-  // Пока оставим сквозную.
+  show emph: set text(fill: guap-blue)
   
   body
 }
@@ -121,9 +117,9 @@
     #if title != auto [
        #place(top + left, dx: 0pt, dy: -65pt)[
           #block(width: 100%)[
-             #text(fill: guap-blue, size: 24pt, weight: "medium", title)
+             #text(fill: guap-blue, size: 24pt, weight: "bold", title)
              #v(-12pt)
-             #line(length: 100%, stroke: (paint: guap-cyan, thickness: 1.5pt))
+             #line(length: 100%, stroke: (paint: guap-blue, thickness: 1.5pt))
           ]
        ]
     ]
@@ -149,17 +145,17 @@
 
 // Слайд "Текст и рисунок" (как на скриншоте 18)
 // Особенность: скругление левого верхнего угла у картинки
-#let slide-text-image(title: auto, text-content, image-content, caption: none) = {
+#let slide-text-image(title: auto, text-content, image-content, caption: none, kind: image) = {
   slide(title: title)[
     #grid(
-      columns: (1.2fr, 1fr), // Тексту чуть больше места
+      columns: (1.1fr, 1fr), // Тексту чуть больше места
       gutter: 30pt,
       [
         #text-content
       ],
       [
-        // Контейнер для картинки
-        #block(width: 100%, height: 350pt)[ // Фиксированная высота для примера
+        #figure(
+        block(width: 100%, height: 100%)[ // Фиксированная высота для примера
            #layout(size => {
               // Создаем маску или просто блок с radius
               // Typst позволяет задавать радиус для каждого угла отдельно!
@@ -172,11 +168,10 @@
                  image-content
               )
            })
-        ]
-        #if caption != none [
-           #v(10pt)
-           #text(size: 14pt, weight: "bold", fill: guap-dark-blue, caption)
-        ]
+        ],
+          caption: caption,
+          kind: image
+        )
       ]
     )
   ]
