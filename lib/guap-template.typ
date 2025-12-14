@@ -47,6 +47,22 @@
   show figure.caption: set text(size: 14pt, weight: "bold", fill: guap-dark-blue)
   show figure.caption: set align(left)
 
+  show table.cell.where(y: 0): set text(fill: white, weight: "bold")
+  set table(
+    // Границы: цвет guap-blue, тонкие линии
+    stroke: (paint: guap-blue, thickness: 0.75pt),
+    
+    // Заливка: синяя для первой строки (row 0), прозрачная для остальных
+    fill: (col, row) => if row == 0 { guap-blue } else { none },
+    
+    // Внутренние отступы для комфортного чтения
+    inset: 10pt,
+    
+    // Выравнивание по умолчанию (можно переопределить при вызове)
+    align: horizon + left,
+    
+    // Передача всех остальных аргументов (columns, content)
+  )
 
   show figure.where(kind: image): set figure(supplement: "Рисунок")
 
